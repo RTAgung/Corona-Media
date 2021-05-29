@@ -1,7 +1,6 @@
 import 'package:corona_media/splash_screen.dart';
 import 'package:flutter/material.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
       title: 'Corona Media',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       home: SplashScreen(),
     );

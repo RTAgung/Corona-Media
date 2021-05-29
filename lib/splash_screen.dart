@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: InkWell(
         child: Container(
-          decoration: BoxDecoration(color: Colors.blue.shade700),
+          decoration: BoxDecoration(color: Colors.green.shade700),
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
