@@ -1,4 +1,5 @@
 import 'package:corona_media/chat_screen.dart';
+import 'package:corona_media/model/corona_provinsi.dart';
 import 'package:corona_media/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -261,51 +262,57 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: 8.0,
                 ),
-                Card(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  DetailScreen()));
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(14.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: Hero(
-                                tag: "logo1",
-                                child: Image.network(
-                                  "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Coat_of_arms_of_Jakarta.svg/1200px-Coat_of_arms_of_Jakarta.svg.png",
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 5,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  "Jakarta",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: dataProvinsi.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final CoronaProvinsi coronaProvinsi = dataProvinsi[index];
+                    return Card(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      DetailScreen(
+                                        coronaProvinsi: coronaProvinsi,
+                                        index: index,
+                                      )));
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(14.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: Hero(
+                                    tag: "logo$index",
+                                    child: Image.network(
+                                      coronaProvinsi.logo,
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                              ),
+                              Expanded(
+                                flex: 5,
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
+                                    Text(
+                                      coronaProvinsi.provinsi,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
                                     Row(
                                       children: [
                                         Icon(
@@ -320,66 +327,36 @@ class HomeScreen extends StatelessWidget {
                                           width: 4,
                                         ),
                                         Text(
-                                          "1,791,221",
+                                          formatter(coronaProvinsi.positif),
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
                                           ),
                                         ),
                                       ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.remove_circle,
-                                          color: Colors.green,
-                                          size: 16,
-                                        ),
-                                        SizedBox(
-                                          width: 4,
-                                        ),
-                                        SizedBox(
-                                          width: 4,
-                                        ),
-                                        Text(
-                                          "1,645,263",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.green,
                                     ),
                                   ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.green,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                )
-                // ListView.builder(
-                //   shrinkWrap: true,
-                //   physics: NeverScrollableScrollPhysics(),
-                //   itemCount: 60,
-                //   itemBuilder: (BuildContext context, int index) {
-                //     return new Text('Item $index');
-                //   },
-                // ),
+                    );
+                  },
+                ),
               ],
             ),
           ],

@@ -1,3 +1,4 @@
+import 'package:corona_media/model/corona_provinsi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -5,6 +6,13 @@ import 'package:pie_chart/pie_chart.dart';
 import "package:latlong/latlong.dart" as latLng;
 
 class DetailScreen extends StatelessWidget {
+  final CoronaProvinsi coronaProvinsi;
+  final int index;
+
+  const DetailScreen(
+      {Key key, @required this.coronaProvinsi, @required this.index})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +35,7 @@ class DetailScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                "DKI Jakarta",
+                coronaProvinsi.provinsi,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
@@ -38,16 +46,20 @@ class DetailScreen extends StatelessWidget {
                 height: 18,
               ),
               Hero(
-                tag: "logo1",
+                tag: "logo$index",
                 child: Image.network(
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Coat_of_arms_of_Jakarta.svg/1200px-Coat_of_arms_of_Jakarta.svg.png",
+                  coronaProvinsi.logo,
                   height: 150,
                 ),
               ),
               SizedBox(
                 height: 18,
               ),
-              DataDetail(),
+              DataDetail(
+                sembuh: coronaProvinsi.sembuh,
+                meninggal: coronaProvinsi.meninggal,
+                positif: coronaProvinsi.positif,
+              ),
               Text(
                 "Location",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -55,7 +67,10 @@ class DetailScreen extends StatelessWidget {
               SizedBox(
                 height: 12,
               ),
-              MapDetail(),
+              MapDetail(
+                lat: coronaProvinsi.latitude,
+                long: coronaProvinsi.longitude,
+              ),
             ],
           ),
         ),
@@ -86,13 +101,24 @@ class _BookmarkButtonState extends State<BookmarkButton> {
 }
 
 class DataDetail extends StatelessWidget {
-  final Map<String, double> dataMap = {
-    "Positif": 1791221,
-    "Negatif": 1645263,
-  };
+  final double sembuh;
+  final double meninggal;
+  final double positif;
+
+  const DataDetail(
+      {Key key,
+      @required this.sembuh,
+      @required this.meninggal,
+      @required this.positif})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, double> dataMap = {
+      "Sembuh": sembuh,
+      "Meninggal": meninggal,
+    };
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -115,7 +141,7 @@ class DataDetail extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    "1,791,221",
+                    formatter(positif),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -126,19 +152,19 @@ class DataDetail extends StatelessWidget {
               Row(
                 children: [
                   Icon(
-                    Icons.remove_circle,
+                    Icons.add_box,
                     color: Colors.green,
                     size: 20,
                   ),
                   SizedBox(
                     width: 8,
                   ),
-                  Text("Negatif"),
+                  Text("Sembuh"),
                   SizedBox(
                     width: 8,
                   ),
                   Text(
-                    "1,645,263",
+                    formatter(sembuh),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -161,7 +187,7 @@ class DataDetail extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    "49,771",
+                    formatter(meninggal),
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -180,8 +206,8 @@ class DataDetail extends StatelessWidget {
             chartLegendSpacing: 32,
             chartRadius: MediaQuery.of(context).size.width / 3.2,
             colorList: [
-              Colors.red,
               Colors.green,
+              Colors.black,
             ],
             showLegends: false,
             chartValueStyle: TextStyle(
@@ -195,13 +221,19 @@ class DataDetail extends StatelessWidget {
 }
 
 class MapDetail extends StatelessWidget {
+  final double lat;
+  final double long;
+
+  const MapDetail({Key key, @required this.lat, @required this.long})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 300,
       child: FlutterMap(
         options: MapOptions(
-          center: latLng.LatLng(4.225081892093782, 96.90952274776174),
+          center: latLng.LatLng(lat, long),
           zoom: 6,
         ),
         layers: [
@@ -213,9 +245,12 @@ class MapDetail extends StatelessWidget {
               Marker(
                 width: 10.0,
                 height: 10.0,
-                point: latLng.LatLng(4.225081892093782, 96.90952274776174),
+                point: latLng.LatLng(lat, long),
                 builder: (ctx) => Container(
-                  child: Icon(Icons.location_pin),
+                  child: Icon(
+                    Icons.location_pin,
+                    color: Colors.red,
+                  ),
                 ),
               ),
             ],
