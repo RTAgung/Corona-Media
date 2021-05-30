@@ -9,50 +9,138 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Container(
-                decoration: BoxDecoration(color: Colors.white),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "LOGIN",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 48,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green.shade900,
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          if (constraints.maxWidth <= 600) {
+            return SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Flexible(
+                    child: Container(
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "LOGIN",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 48,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green.shade900,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.green.shade700,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(32.0),
-                    topRight: Radius.circular(32.0),
                   ),
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 32.0, vertical: 40.0),
-                  child: FormLogin(),
-                ),
+                  Container(
+                    height: 340,
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade700,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(32.0),
+                        topRight: Radius.circular(32.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 32.0, vertical: 40.0),
+                      child: FormLogin(),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  height: 400,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade700,
+                          borderRadius: BorderRadius.all(Radius.circular(12))
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "LOGIN",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Container(
+                              width: 400,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 32.0, vertical: 40.0),
+                                child: FormLogin(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // children: <Widget>[
+              //   Container(
+              //     width: 600,
+              //     child: Card(
+              //       child: Row(
+              //         children: [
+              //           Container(
+              //             decoration: BoxDecoration(color: Colors.white),
+              //             child: Column(
+              //               crossAxisAlignment: CrossAxisAlignment.stretch,
+              //               mainAxisAlignment: MainAxisAlignment.center,
+              //               children: <Widget>[
+              //                 Text(
+              //                   "LOGIN",
+              //                   textAlign: TextAlign.center,
+              //                   style: TextStyle(
+              //                     fontSize: 48,
+              //                     fontWeight: FontWeight.bold,
+              //                     color: Colors.green.shade900,
+              //                   ),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //           Container(
+              //             height: 340,
+              //             decoration: BoxDecoration(
+              //               color: Colors.green.shade700,
+              //             ),
+              //             child: Padding(
+              //               padding: EdgeInsets.symmetric(
+              //                   horizontal: 32.0, vertical: 40.0),
+              //               child: FormLogin(),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ],
+            );
+          }
+        },
       ),
     );
   }
@@ -130,8 +218,7 @@ class _FormLoginState extends State<FormLogin> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => CarouselScreen()));
-            }
-            else {
+            } else {
               Fluttertoast.showToast(
                   msg: "Login Failed",
                   toastLength: Toast.LENGTH_SHORT,

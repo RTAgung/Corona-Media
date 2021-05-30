@@ -66,7 +66,7 @@ var dataProvinsi = [
       latitude: -1.6177499996423312,
       longitude: 103.59931999973587,
       logo:
-          "http://jambiprov.go.id/jambiprov-zxcvbnm/editor/gambar/Image/Logo%20Provinsi%20Jambi%20-%20[agus91]%20(1).png"),
+          "https://upload.wikimedia.org/wikipedia/commons/5/5b/Jambi_symbol.jpg"),
   CoronaProvinsi(
       provinsi: "Sumatera Selatan",
       positif: 20068,
@@ -144,7 +144,7 @@ var dataProvinsi = [
     latitude: -7.258970382933987,
     longitude: 110.20111252917499,
     logo:
-        "https://infojateng.id/wp-content/uploads/2020/09/441-4415833_logo-jawa-tengah-png-lambang-daerah-jawa-tengah.png",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Coat_of_arms_of_Central_Java.svg/1200px-Coat_of_arms_of_Central_Java.svg.png",
   ),
   CoronaProvinsi(
     provinsi: "Daerah Istimewa Yogyakarta",
@@ -174,7 +174,7 @@ var dataProvinsi = [
     latitude: -6.456181598923129,
     longitude: 106.10919706896232,
     logo:
-        "https://bantenprov.go.id/uploads/images/c08b0859e4a37d885196f79cddc8880951d87500.png",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Coat_of_arms_of_Banten.svg/1200px-Coat_of_arms_of_Banten.svg.png",
   ),
 ];
 

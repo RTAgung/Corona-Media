@@ -15,11 +15,151 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxWidth <= 610) {
+          return _MobileLayout(
+            coronaProvinsi: coronaProvinsi,
+            index: index,
+          );
+        } else {
+          return _WebLayout(
+            coronaProvinsi: coronaProvinsi,
+            index: index,
+          );
+        }
+      },
+    );
+  }
+}
+
+class _WebLayout extends StatelessWidget {
+  final CoronaProvinsi coronaProvinsi;
+  final int index;
+
+  const _WebLayout(
+      {Key key, @required this.coronaProvinsi, @required this.index})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 600,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_back_rounded,
+                              color: Colors.green,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          BookmarkButton(
+                            isWeb: true,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Card(
+                        elevation: 8,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Hero(
+                                tag: "logo$index",
+                                child: Image.network(
+                                  coronaProvinsi.logo,
+                                  height: 150,
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    coronaProvinsi.provinsi,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 18,
+                                  ),
+                                  DataDetail(
+                                    sembuh: coronaProvinsi.sembuh,
+                                    meninggal: coronaProvinsi.meninggal,
+                                    positif: coronaProvinsi.positif,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                        "Location",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      MapDetail(
+                        lat: coronaProvinsi.latitude,
+                        long: coronaProvinsi.longitude,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MobileLayout extends StatelessWidget {
+  final CoronaProvinsi coronaProvinsi;
+  final int index;
+
+  const _MobileLayout(
+      {Key key, @required this.coronaProvinsi, @required this.index})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Jakarta"),
+        title: Text(coronaProvinsi.provinsi),
         actions: [
-          BookmarkButton(),
+          BookmarkButton(
+            isWeb: false,
+          ),
         ],
         leading: IconButton(
           icon: Icon(Icons.arrow_back_rounded),
@@ -80,6 +220,10 @@ class DetailScreen extends StatelessWidget {
 }
 
 class BookmarkButton extends StatefulWidget {
+  final bool isWeb;
+
+  const BookmarkButton({Key key, @required this.isWeb}) : super(key: key);
+
   @override
   _BookmarkButtonState createState() => _BookmarkButtonState();
 }
@@ -95,7 +239,10 @@ class _BookmarkButtonState extends State<BookmarkButton> {
           isBookmark = !isBookmark;
         });
       },
-      icon: Icon(isBookmark ? Icons.bookmark : Icons.bookmark_border),
+      icon: Icon(
+        isBookmark ? Icons.bookmark : Icons.bookmark_border,
+        color: widget.isWeb ? Colors.green : Colors.white,
+      ),
     );
   }
 }
@@ -119,103 +266,128 @@ class DataDetail extends StatelessWidget {
       "Meninggal": meninggal,
     };
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.add_circle,
-                    color: Colors.red,
-                    size: 20,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  width: 155,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.add_circle,
+                        color: Colors.red,
+                        size: 20,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text("Positif"),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        formatter(positif),
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    width: 8,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  width: 155,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.add_box,
+                        color: Colors.green,
+                        size: 20,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text("Sembuh"),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        formatter(sembuh),
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
-                  Text("Positif"),
-                  SizedBox(
-                    width: 8,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  width: 155,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.dangerous,
+                        color: Colors.black,
+                        size: 20,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text("Meniggal"),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        formatter(meninggal),
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
-                  Text(
-                    formatter(positif),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.add_box,
-                    color: Colors.green,
-                    size: 20,
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text("Sembuh"),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    formatter(sembuh),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.dangerous,
-                    color: Colors.black,
-                    size: 20,
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text("Meniggal"),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    formatter(meninggal),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: PieChart(
-            dataMap: dataMap,
-            showChartValuesOutside: false,
-            animationDuration: Duration(milliseconds: 800),
-            chartLegendSpacing: 32,
-            chartRadius: MediaQuery.of(context).size.width / 3.2,
-            colorList: [
-              Colors.green,
-              Colors.black,
-            ],
-            showLegends: false,
-            chartValueStyle: TextStyle(
-              color: Colors.white,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+              ],
             ),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  child: PieChart(
+                    dataMap: dataMap,
+                    showChartValuesOutside: false,
+                    animationDuration: Duration(milliseconds: 800),
+                    chartLegendSpacing: 32,
+                    chartRadius: 100,
+                    colorList: [
+                      Colors.green,
+                      Colors.black,
+                    ],
+                    showLegends: false,
+                    chartValueStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -234,7 +406,7 @@ class MapDetail extends StatelessWidget {
       child: FlutterMap(
         options: MapOptions(
           center: latLng.LatLng(lat, long),
-          zoom: 6,
+          zoom: 7,
         ),
         layers: [
           TileLayerOptions(

@@ -1,7 +1,37 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ChatScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxWidth <= 600) {
+          return LayoutScreen();
+        } else {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 600,
+                    height: constraints.maxHeight,
+                    child: LayoutScreen(),
+                  ),
+                ],
+              ),
+            ],
+          );
+        }
+      },
+    );
+  }
+}
+
+class LayoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +75,7 @@ class ChatScreen extends StatelessWidget {
                             'Selamat siang pak dokter, saya ingin konsultasi',
                           ),
                           padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-                          width: 200.0,
+                          width: 250.0,
                           decoration: BoxDecoration(
                             color: Colors.green.shade100,
                             borderRadius: BorderRadius.circular(8.0),
@@ -78,7 +108,7 @@ class ChatScreen extends StatelessWidget {
                             'Baik, bagaimana?',
                           ),
                           padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-                          width: 200.0,
+                          width: 250.0,
                           decoration: BoxDecoration(
                             color: Colors.grey.shade200,
                             borderRadius: BorderRadius.circular(8.0),
